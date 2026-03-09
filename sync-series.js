@@ -1,57 +1,44 @@
 #!/usr/bin/env node
-
-const fs = require('fs').promises;
-const axios = require('axios');
-const { Octokit } = require('@octokit/rest');
+import fs from 'fs/promises';
+import axios from 'axios';
+import { Octokit } from '@octokit/rest';
 
 const API_URL = 'https://dillzy-movie.cricketstream745.workers.dev/hollywood/series?offset=0';
 const DATA_FILE = 'series.json';
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
-async function fetchFreshData() {
-  console.log('🌐 Fetching FRESH data...');
-  const { data } = await axios.get(API_URL, { 
-    timeout: 30000,
-    headers: { 'User-Agent': 'SeriesUpdater/1.0' }
-  });
-  console.log(`✅ Got ${data.length} series`);
-  return data;
-}
-
-async function saveData(data) {
-  const json = JSON.stringify(data, null, 2);
-  await fs.writeFile(DATA_FILE, json);
-  console.log(`💾 Saved ${data.length} series`);
-  return Buffer.from(json).toString('base64');
-}
-
-async function commitData(owner, repo, data, count) {
-  await octokit.repos.createOrUpdateFileContents({
-    owner, repo, path: DATA_FILE,
-    message: `🔄 FULL REFRESH: ${count} series (${new Date().toISOString().split('T')[0]})`,
-    content: data,
-    branch: 'main'
-  });
-  console.log('✅ Committed!');
-}
-
 async function main() {
   try {
+    console.log('🚀 Starting FULL REFRESH...');
+    
+    // 1. Fetch fresh data
+    const { data } = await axios.get(API_URL, { 
+      timeout: 30000,
+      headers: { 'User-Agent': 'SeriesBot/1.0' }
+    });
+    console.log(`✅ Fetched ${data.length} series`);
+
+    // 2. Save to file
+    await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
+    console.log('💾 Saved to series.json');
+
+    // 3. Commit (using checkout SHA)
     const repo = process.env.GITHUB_REPOSITORY.split('/');
-    const [owner, repoName] = repo;
+    const content = Buffer.from(await fs.readFile(DATA_FILE)).toString('base64');
     
-    const freshData = await fetchFreshData();
-    const fileData = await saveData(freshData);
+    await octokit.rest.repos.createOrUpdateFileContents({
+      owner: repo[0], repo: repo[1], path: DATA_FILE,
+      message: `🔄 FULL REFRESH: ${data.length} series`,
+      content,
+      branch: 'main'
+    });
     
-    await commitData(owner, repoName, fileData, freshData.length);
-    
-    console.log(`🎉 DONE! ${freshData.length} series live!`);
-    process.exit(0);
-  } catch (e) {
-    console.error('💥 ERROR:', e.message);
+    console.log('✅ COMMIT SUCCESS!');
+  } catch (error) {
+    console.error('💥 ERROR:', error.message);
     process.exit(1);
   }
 }
 
-if (require.main === module) main();
+main();
