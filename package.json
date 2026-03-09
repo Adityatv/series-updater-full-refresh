@@ -1,11 +1,11 @@
 {
   "name": "series-updater-full-refresh",
   "version": "1.0.0",
-  "description": "Full refresh Hollywood series data every 6 hours",
+  "type": "module",
+  "description": "Full refresh Hollywood series every 6h",
   "main": "sync-series.js",
   "scripts": {
-    "sync": "node sync-series.js",
-    "start": "node sync-series.js"
+    "sync": "node sync-series.js"
   },
   "dependencies": {
     "axios": "^1.6.2",
@@ -13,7 +13,5 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "author": "HackerAI",
-  "license": "MIT"
+  }
 }
