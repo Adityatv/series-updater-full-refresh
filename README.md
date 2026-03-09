@@ -1,16 +1,4 @@
-# 🔄 Series Full Refresh
+# Series Updater - Live JSON
+https://adityatv.github.io/series-updater-full-refresh/series.json
 
-**Live JSON:** https://series-updater-full-refresh.vercel.app/series.json
-
-## Auto-updates every 6 hours from:
-`https://dillzy-movie.cricketstream745.workers.dev/hollywood/series`
-
-## Status
-[![Workflow](https://github.com/Adityatv/series-updater-full-refresh/workflows/%F0%9F%94%84%20Full%20Refresh%20Series/badge.svg)](https://github.com/Adityatv/series-updater-full-refresh/actions)
-
-## Quick Deploy
-1. **GitHub:** Upload these 6 files
-2. **Vercel:** `vercel.com` → Import repo → Deploy
-3. **Use:** `https://series-updater-full-refresh.vercel.app/series.json`
-
-**Manual refresh:** Actions → "🔄 Full Refresh Series" → Run
+Auto-refreshes every 6 hours!
