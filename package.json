@@ -1,8 +1,7 @@
 {
   "name": "series-updater-full-refresh",
   "version": "1.0.0",
-  "type": "module",
-  "description": "Full refresh Hollywood series every 6h",
+  "description": "Full refresh series data",
   "main": "sync-series.js",
   "scripts": {
     "sync": "node sync-series.js"
@@ -11,7 +10,8 @@
     "axios": "^1.6.2",
     "@octokit/rest": "^20.0.1"
   },
+  "type": "commonjs",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18"
   }
 }
