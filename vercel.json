@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/series.json", "dest": "/series.json" }
+  ]
+}
