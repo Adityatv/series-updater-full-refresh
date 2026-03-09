@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Series Data</title>
+  <meta http-equiv="refresh" content="21600"> <!-- Refresh every 6 hours -->
+</head>
+<body>
+  <h1>🔄 Auto-refreshing every 6 hours...</h1>
+  <pre id="data">Loading fresh data...</pre>
+  
+  <script>
+    fetch('/series.json')
+      .then(r=>r.json())
+      .then(data => document.getElementById('data').textContent = JSON.stringify(data, null, 2));
+  </script>
+</body>
+</html>
